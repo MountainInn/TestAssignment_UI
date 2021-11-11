@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 58262b83a88082f45ac2f125ec522039
+  m_SerializeEntries:
+  - m_GUID: 6a3bdc51537543d4c9894ccb395c5650
+    m_Address: corn
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9060235995122bd45823481f19aeb678
+    m_Address: butter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5b280ccca0c19b74cb7c160e3e6b9cd6
+    m_Address: mushrooms
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 00a73460349709d449a8356a8ab6cb01
+    m_Address: wheat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d2ed83e5fc4a10f459845ad70bc61619, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b7257e18f3476974f949d0460fa1c8f8, type: 2}
+    - {fileID: 11400000, guid: e046c25843a97d448a1d204e59f479a4, type: 2}
