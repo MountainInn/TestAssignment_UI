@@ -22,23 +22,47 @@ public class Page : MonoBehaviour
     {
         for (int i =0; i < items.Count; i++)
         {
-            Item II = items[i];
+            Item item = items[i];
 
             bool showItem = i < itemData.Count;
 
-            II.gameObject.SetActive(showItem);
+            item.gameObject.SetActive(showItem);
 
 
             if (showItem)
             {
                 ItemData data = itemData[i];
 
-                II.SetItemData(data);
+                item.SetData(data);
 
-                Addressables.LoadAssetAsync<Sprite>(data.addressableID)
-                    .Completed += (handle) => II.SetItemIcon(handle.Result);
+                if (data.avatarSprite == null)
+                {
+                    StartCoroutine(DownloadImage(data.avatarLink,
+                                                 (texture) =>
+                                                 {
+                                                     data.CacheAvatarSprite(texture);
+                                                     item.SetAvatarSprite(data.avatarSprite);
+                                                 }));
+                }
+                else
+                {
+                    item.SetAvatarSprite(data.avatarSprite);
+                }
 
-                StartCoroutine(DownloadImage(data.avatarLink, II.SetAvatar));
+
+                if (data.itemSprite == null)
+                {
+                    Addressables.LoadAssetAsync<Sprite>(data.addressableID)
+                        .Completed += (handle) =>
+                        {
+                            data.CacheItemSprite( handle.Result );
+                            item.SetItemSprite(data.itemSprite);
+                        };
+                }
+                else
+                {
+                    item.SetItemSprite(data.itemSprite);
+                }
             }
         }
 

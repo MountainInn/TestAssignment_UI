@@ -4,7 +4,7 @@ public class PageData
 {
     public List<ItemData> items;
     public bool
-        leftButtonAvailable,
-        rightButtonAvailable,
-        closeButtonAvailable;
+        leftButtonInteractable,
+        rightButtonInteractable,
+        closeButtonInteractable;
 }

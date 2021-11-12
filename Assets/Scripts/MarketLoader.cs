@@ -13,23 +13,17 @@ using Newtonsoft.Json.Serialization;
 
 public class MarketLoader : MonoBehaviour
 {
-    public static string pagesPath;
-
     [SerializeField] MarketWindow marketWindow;
 
 
     void Awake()
     {
-        pagesPath = Application.persistentDataPath+"/pages.json";
-    }
-    void Start()
-    {
-        LoadPagesData(); ;
+        LoadPagesData();
     }
 
     public void LoadPagesData()
     {
-        string json = File.ReadAllText(pagesPath);
+        string json = File.ReadAllText(MarketDataGenerator.pagesPath);
 
         JArray save = JArray.Parse(json);
 
@@ -44,7 +38,7 @@ public class MarketLoader : MonoBehaviour
             pageDatas.Add(pageData);
         }
 
-        marketWindow.LoadPageData(pageDatas);
+        marketWindow.SetPageData(pageDatas);
     }
 
 

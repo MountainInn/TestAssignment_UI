@@ -33,6 +33,10 @@ MonoBehaviour:
     m_Address: wheat
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: b03e9a4d13dc9884c8ab31b18182b812
+    m_Address: Assets/ItemIcons
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d2ed83e5fc4a10f459845ad70bc61619, type: 2}
   m_SchemaSet:

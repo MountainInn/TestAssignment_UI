@@ -8,7 +8,7 @@ public class Item : MonoBehaviour
     [SerializeField] Image avatar, itemIcon;
     [SerializeField] TextMeshProUGUI playerName, itemQuantity, itemName, itemPrice;
 
-    public void SetItemData(ItemData itemData)
+    public void SetData(ItemData itemData)
     {
         playerName.text = itemData.playerName;
         itemQuantity.text = "x"+ itemData.quantity.ToString();
@@ -16,14 +16,13 @@ public class Item : MonoBehaviour
         itemPrice.text = itemData.price.ToString();
     }
 
-    public void SetItemIcon(Sprite itemIconSprite)
+    public void SetItemSprite(Sprite itemIconSprite)
     {
         itemIcon.sprite = itemIconSprite;
     }
 
-    public void SetAvatar(Texture2D avatarTexture)
+    public void SetAvatarSprite(Sprite avatarSprite)
     {
-        avatar.sprite = Sprite.Create(avatarTexture, new Rect(0, 0, avatarTexture.width, avatarTexture.height), new Vector2(.5f, .5f));
+        avatar.sprite = avatarSprite;
     }
-
 }

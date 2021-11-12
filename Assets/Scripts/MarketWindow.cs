@@ -13,13 +13,9 @@ public class MarketWindow : MonoBehaviour
 
     float pageWidth;
 
-    int
-        currentPageId,
-        targetPageId;
+    int currentPageId, targetPageId;
 
-    RectTransform
-        activePageRect,
-        freePageRect;
+    RectTransform activePageRect, freePageRect;
 
     Coroutine tabTween;
 
@@ -27,15 +23,19 @@ public class MarketWindow : MonoBehaviour
     {
         activePageRect = activePage.GetComponent<RectTransform>();
         freePageRect = freePage.GetComponent<RectTransform>();
-
         pageWidth = activePageRect.sizeDelta.x;
 
-        pageData = new List<PageData>();
+        closeButton.onClick.AddListener(()=>Application.Quit());
     }
 
     void Start()
     {
         InitializePages();
+    }
+
+    public void SetPageData(List<PageData> pageData)
+    {
+        this.pageData = pageData;
     }
 
     void InitializePages()
@@ -45,65 +45,67 @@ public class MarketWindow : MonoBehaviour
         freePageRect.anchoredPosition = new Vector3(pageWidth, 0, 0);
     }
 
+    void ApplyPageData(Page page,  int pageDataId)
+    {
+        PageData data = pageData[pageDataId];
+
+        leftButton.interactable = data.leftButtonInteractable;
+        rightButton.interactable = data.rightButtonInteractable;
+        closeButton.interactable = data.closeButtonInteractable;
+
+        page.LoadItems(data.items);
+    }
+
     public void SwitchPageLeft()
     {
-        if (currentPageId == 0) return;
-
-        targetPageId = currentPageId - 1;
-
-        SwitchPage(targetPageId, -1);
+        SwitchPage(-1);
     }
     public void SwitchPageRight()
     {
-        if (currentPageId == pageData.Count-1) return;
-
-        targetPageId = currentPageId + 1;
-
-        SwitchPage(targetPageId, +1);
+        SwitchPage(1);
     }
 
-    private void SwitchPage(int nextPageId, int pageDirection)
+    void SwitchPage(int direction)
     {
-        StartCoroutine(TweenTabPositions(pageDirection));
+        targetPageId = Mathf.Clamp(targetPageId + direction, 0, pageData.Count - 1);
 
-        currentPageId = nextPageId;
-    }
-
-    private void ApplyPageData(Page page,  int pageDataId)
-    {
-        PageData nextPage = pageData[pageDataId];
-
-        leftButton.interactable = nextPage.leftButtonAvailable;
-        rightButton.interactable = nextPage.rightButtonAvailable;
-        closeButton.interactable = nextPage.closeButtonAvailable;
-
-        page.LoadItems(nextPage.items);
-    }
-
-    IEnumerator TweenTabPositions(int direction)
-    {
-        Vector3 nextTabStartPosition = freePageRect.anchoredPosition = new Vector3(pageWidth * direction, 0, 0);
-
-        float t = 0;
-
-        ApplyPageData(freePage, nextPageId);
-
-        (activePage, freePage) = (freePage, activePage);
-        (activePageRect, freePageRect) = (freePageRect, activePageRect);
-
-        while (t < 1f)
+        if (tabTween == null)
         {
-            t += Time.deltaTime / .5f;
-
-            freePageRect.anchoredPosition = Vector3.Lerp(Vector3.zero, -nextTabStartPosition, t);
-            activePageRect.anchoredPosition = Vector3.Lerp(nextTabStartPosition, Vector3.zero, t);
-
-            yield return new WaitForEndOfFrame();
+            tabTween = StartCoroutine(TweenPagePositions());
         }
     }
 
-    public void LoadPageData(List<PageData> pageData)
+    IEnumerator TweenPagePositions()
     {
-        this.pageData = pageData;
+        while (currentPageId != targetPageId)
+        {
+            int
+                direction = (int)Mathf.Sign( targetPageId - currentPageId ),
+                nextPageId = currentPageId + direction;
+
+            Vector3 nextTabStartPosition = freePageRect.anchoredPosition = new Vector3(pageWidth * direction, 0, 0);
+
+            ApplyPageData(freePage, nextPageId);
+
+            (activePage, freePage) = (freePage, activePage);
+            (activePageRect, freePageRect) = (freePageRect, activePageRect);
+
+            float t = 0;
+
+            do
+            {
+                t += Time.deltaTime / .5f;
+
+                freePageRect.anchoredPosition = Vector3.Lerp(Vector3.zero, -nextTabStartPosition, t);
+                activePageRect.anchoredPosition = Vector3.Lerp(nextTabStartPosition, Vector3.zero, t);
+
+                yield return new WaitForEndOfFrame();
+            }
+            while (t < 1f);
+
+            currentPageId = nextPageId;
+        }
+
+        tabTween = null;
     }
 }
